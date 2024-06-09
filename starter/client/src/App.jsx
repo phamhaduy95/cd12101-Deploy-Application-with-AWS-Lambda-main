@@ -7,8 +7,17 @@ import { EditTodo } from './components/EditTodo'
 import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { Todos } from './components/Todos'
+import Callback from './components/Callback'
 
 export default function App() {
+  const {
+    isAuthenticated,
+    isLoading,
+    loginWithRedirect,
+    logout,
+    loginWithPopup
+  } = useAuth0()
+
   function generateMenu() {
     return (
       <Menu>
@@ -24,20 +33,21 @@ export default function App() {
   function logInLogOutButton() {
     if (isAuthenticated) {
       return (
-        <Menu.Item name="logout" onClick={() => logout({ returnTo: window.location.origin })}>
+        <Menu.Item
+          name="logout"
+          onClick={() => logout({ returnTo: window.location.origin })}
+        >
           Log Out
         </Menu.Item>
       )
     } else {
       return (
-        <Menu.Item name="login" onClick={() => loginWithRedirect()}>
+        <Menu.Item name="login" onClick={() => loginWithPopup()}>
           Log In
         </Menu.Item>
       )
     }
   }
-
-  const { isAuthenticated, isLoading, loginWithRedirect, logout } = useAuth0()
 
   return (
     <div>
@@ -58,7 +68,11 @@ export default function App() {
   )
 }
 
-function generateCurrentPage(isAuthenticated) {
+function generateCurrentPage(isAuthenticated, isLoading) {
+  if (isLoading) {
+    return <Callback />
+  }
+
   if (!isAuthenticated) {
     return <LogIn />
   }
