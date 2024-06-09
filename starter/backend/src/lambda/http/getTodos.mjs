@@ -1,7 +1,6 @@
 import { getToDoList } from '../../dataLayer/dbAccess.mjs'
-import { useMiddleware } from '../../middleware/middy'
 import { getUserId } from '../utils.mjs'
-import { useMiddleware } from '../../middleware/middy'
+import { useMiddleware } from '../../middleware/middy.mjs'
 import { createLogger } from '../../utils/logger.mjs'
 
 const logger = createLogger('todos')
@@ -16,7 +15,7 @@ export const handler = useMiddleware(async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      todos: items
+      items
     })
   }
 })

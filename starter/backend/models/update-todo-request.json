@@ -3,21 +3,19 @@
   "title": "todo",
   "type": "object",
   "properties": {
-    "todoId": {
-      "type": "string"
-    },
     "name": {
-      "type": "string"
-    },
-    "attachmentUrl": {
-      "type": "string"
-    },
-    "dueDate": {
       "type": "string"
     },
     "done": {
       "type": "boolean"
+    },
+    "dueDate": {
+      "type": "string"
+    },
+    "attachmentURL": {
+      "type": "string"
     }
   },
-  "required": ["name", "done", "todoId"]
+
+  "additionalProperties": false
 }

@@ -28,11 +28,16 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+    iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/{self:provider.environment.TODOS_CREATED_AT_INDEX}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_CREATED_AT_INDEX}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
       - Effect: Allow
         Action:
           - s3:GetObject
@@ -48,6 +53,7 @@ functions:
           request:
             schemas:
               application/json: ${file(models/create-todo-request.json)}
+    iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -64,10 +70,11 @@ functions:
           request:
             schemas:
               application/json: ${file(models/update-todo-request.json)}
+    iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
         Action:
-          - dynamodb:PutItem
+          - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
@@ -77,6 +84,7 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+    iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -95,6 +103,10 @@ functions:
         Action:
           - s3:PutObject
         Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 resources:
   Resources:
     TodosTable:

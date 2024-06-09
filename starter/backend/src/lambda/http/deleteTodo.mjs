@@ -1,6 +1,6 @@
 import { getUserId } from '../utils.mjs'
 import { deleteToDo } from '../../dataLayer/dbAccess.mjs'
-import { useMiddleware } from '../../middleware/middy'
+import { useMiddleware } from '../../middleware/middy.mjs'
 import { createLogger } from '../../utils/logger.mjs'
 
 const logger = createLogger('todos')

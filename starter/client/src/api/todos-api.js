@@ -52,10 +52,12 @@ export async function deleteTodo(idToken, todoId) {
   })
 }
 
-export async function getUploadUrl(idToken, todoId) {
+export async function getUploadUrl(idToken, todoId, { ext }) {
   const response = await Axios.post(
     `${process.env.REACT_APP_API_ENDPOINT}/todos/${todoId}/attachment`,
-    '',
+    JSON.stringify({
+      ext
+    }),
     {
       headers: {
         'Content-Type': 'application/json',
@@ -67,5 +69,9 @@ export async function getUploadUrl(idToken, todoId) {
 }
 
 export async function uploadFile(uploadUrl, file) {
-  await Axios.put(uploadUrl, file)
+  await Axios.put(uploadUrl, file, {
+    headers: {
+      'Content-Type': file.type
+    }
+  })
 }

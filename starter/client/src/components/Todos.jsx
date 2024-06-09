@@ -63,8 +63,8 @@ export function Todos() {
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {todo.attachmentUrl && (
-                <Image src={todo.attachmentUrl} size="small" wrapped />
+              {todo.attachmentURL && (
+                <Image src={todo.attachmentURL} size="small" wrapped />
               )}
               <Grid.Column width={16}>
                 <Divider />
@@ -108,7 +108,7 @@ export function Todos() {
       )
     } catch (e) {
       console.log('Failed to check a TODO', e)
-      alert('Todo deletion failed')
+      alert('Todo update failed')
     }
   }
 

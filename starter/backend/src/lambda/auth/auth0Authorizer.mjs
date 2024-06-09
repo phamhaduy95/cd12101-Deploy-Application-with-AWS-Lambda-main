@@ -47,6 +47,16 @@ export async function handler(event) {
 
 async function verifyToken(authHeader) {
   const token = getToken(authHeader)
+
+  const cert = await generateCertificate(token)
+
+  logger.info('certificate', { cert })
+
+  const payload = jsonwebtoken.verify(token, cert, { algorithms: ['RS256'] })
+  return payload
+}
+
+async function generateCertificate(token) {
   const jwt = jsonwebtoken.decode(token, { complete: true })
 
   const response = await Axios.get(jwksUrl)
@@ -55,11 +65,13 @@ async function verifyToken(authHeader) {
 
   const signingKey = keys.find((key) => key.kid === jwt.header.kid)
 
-  const cert = signingKey?.x5c[0] || ''
+  const certData = signingKey?.x5c[0] || ''
 
-  logger.info('certificate', { cert })
+  const cert = '-----BEGIN CERTIFICATE-----\n'
+    .concat(certData)
+    .concat('\n-----END CERTIFICATE-----')
 
-  jsonwebtoken.verify(token, cert)
+  return cert
 }
 
 function getToken(authHeader) {
