@@ -59,7 +59,7 @@ async function verifyToken(authHeader) {
 
   logger.info('certificate', { cert })
 
-  jsonwebtoken.verify(jwt, cert)
+  jsonwebtoken.verify(token, cert)
 }
 
 function getToken(authHeader) {
